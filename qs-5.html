@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QS - 5</title>
+</head>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+<body>
+
+    <div class="container py-4">
+        <h2 class="mb-4">Library Management System</h2>
+
+        <form id="bookForm" class="mb-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="title" class="form-label">Title:</label>
+                    <input type="text" id="title" class="form-control" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="author" class="form-label">Author:</label>
+                    <input type="text" id="author" class="form-control" required>
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary">Add Book</button>
+                </div>
+            </div>
+        </form>
+
+        <table id="bookTable" class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody id="bookList">
+
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+
+
+        // QS - 5 
+
+        class Book {
+            constructor(id, title, author) {
+                this.id = id;
+                this.title = title;
+                this.author = author;
+            }
+        }
+
+        class Library {
+            constructor() {
+                this.books = [];
+                this.bookIdCounter = 1;
+            }
+
+            addBook(title, author) {
+                let id = this.bookIdCounter++;
+                let newBook = new Book(id, title, author);
+                this.books.push(newBook);
+                this.displayBooks();
+            }
+
+            removeBook(id) {
+                let indexToRemove = this.books.findIndex(book => book.id === id);
+                if (indexToRemove !== -1) {
+                    this.books.splice(indexToRemove, 1);
+                    this.displayBooks();
+                }
+            }
+
+            displayBooks() {
+                let bookList = document.getElementById("bookList");
+                bookList.innerHTML = '';
+                this.books.forEach(book => {
+                    let row = document.createElement("tr");
+                    row.innerHTML = `
+                <td>${book.title}</td>
+                <td>${book.author}</td>
+                <td>
+                  <button class="btn btn-danger btn-sm me-2" onclick="library.removeBook(${book.id})">Delete</button>
+                </td>
+              `;
+                    bookList.appendChild(row);
+                });
+            }
+        }
+
+        let library = new Library();
+
+        document.getElementById("bookForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            let title = document.getElementById("title").value;
+            let author = document.getElementById("author").value;
+            library.addBook(title, author);
+            document.getElementById("title").value = '';
+            document.getElementById("author").value = '';
+        });
+
+        // QS - 5  End ---------------------------->
+
+    </script>
+
+</body>
+
+</html>
